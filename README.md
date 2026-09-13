@@ -95,6 +95,36 @@ $S/verify_output.sh shorts/ frames_check/
 
 `SKILL.md` viết theo chuẩn [agentskills.io](https://agentskills.io) — copy thư mục này vào `~/.agents/skills/` hoặc `~/.pi/agent/skills/` để agent (pi, Claude Code...) tự trigger khi gặp task cắt highlight YouTube thành shorts.
 
+## Prompt mẫu cho AI agent
+
+Khi dùng thư mục này làm skill (agent đọc `SKILL.md`), chỉ cần mô tả yêu cầu — agent tự map vào pipeline. Một vài mẫu:
+
+**Cơ bản — full pipeline:**
+
+> Tải video https://www.youtube.com/watch?v=VIDEO_ID và cắt thành các short highlight dọc cho YouTube Shorts.
+
+**Tuỳ chỉnh phân giải + thời lượng:**
+
+> Cắt highlight video này thành shorts 720×1280, mỗi clip từ 15 đến 30 giây, tải ở chất lượng 1080p.
+
+**Chỉ phân tích, chưa cut:**
+
+> Tìm 10 đoạn cao trào nhất trong video này, cửa sổ 20 giây, cho tôi danh sách timestamp kèm contact sheet để duyệt trước khi cắt.
+
+**Chỉnh vị trí subject:**
+
+> Clip bị lệch — người luôn đứng bên phải khung hình. Dựng lại shorts với x_offset 600 cho tất cả các clip.
+
+**Xuất nhiều phiên bản:**
+
+> Từ cùng bộ timestamps, xuất 2 phiên bản: 1080×1920 cho YouTube Shorts và 1080×1350 cho feed Instagram.
+
+**Kiểm chứng trước khi nhận:**
+
+> Cắt xong chạy verify và hiện cho tôi 3 frame mẫu mỗi clip để tôi duyệt, đừng báo done trước khi tôi xem.
+
+Mẹo: nêu rõ **URL video**, **phân giải dọc** (nếu không thích 1080×1920), **khoảng thời lượng clip**, **chất lượng tải** — agent map thẳng vào tham số của pipeline.
+
 ## Common Mistakes
 
 Xem bảng đầy đủ trong [SKILL.md](SKILL.md) — gồm: subtitle burn-in bị cắt khi crop 9:16, mảnh hình lặp ở caption bar, toạ độ crop lẻ lệch màu yuv420p, Opus-in-mp4, hàm bash tên `cut` shadow `/usr/bin/cut`, `-nostdin` cho ffmpeg trong loop `read`.
