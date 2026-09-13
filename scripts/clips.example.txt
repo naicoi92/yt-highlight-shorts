@@ -1,0 +1,9 @@
+# clips.txt — format: <start_sec> <dur_sec> <ten_clip> [x_offset]
+# start/dur: giây. x_offset: crop X 404px trên khung 1280 (bỏ trống = 437 giữa).
+# Ví dụ thực tế từ session DEAlrpegPNc (video 16:37, bodycam, subject lệch tâm):
+190	45	01_traffic_stop	380
+300	45	02_gianh_co_trong_xe	430
+505	50	03_keo_ra_khoi_xe	500
+665	50	04_cai_va_tu_choi_kiem_dinh	390
+765	50	05_bi_bat	380
+895	45	06_jail_booking	437
