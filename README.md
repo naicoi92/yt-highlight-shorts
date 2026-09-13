@@ -125,6 +125,22 @@ Khi dùng thư mục này làm skill (agent đọc `SKILL.md`), chỉ cần mô 
 
 Mẹo: nêu rõ **URL video**, **phân giải dọc** (nếu không thích 1080×1920), **khoảng thời lượng clip**, **chất lượng tải** — agent map thẳng vào tham số của pipeline.
 
+### God prompt — chất lượng cao nhất, highlight tốt nhất
+
+Dùng khi cần kết quả tốt nhất, không cần tiết kiệm thời gian. Prompt ép agent chạy pipeline ở chế độ nghiêm ngặt nhất:
+
+> Tải video https://www.youtube.com/watch?v=VIDEO_ID và sản xuất bộ shorts chất lượng cao nhất theo quy trình đầy đủ dưới đây. KHÔNG bỏ bước, KHÔNG báo done sớm.
+>
+> 1. **Tải nguồn**: chất lượng 1080, bắt buộc H.264+AAC (được preset avc1 — không nhận AV1/Opus).
+> 2. **Tìm highlight 2 lớp**: chạy loudness analysis cửa sổ rộng 30 giây để xác định vùng cao trào, rồi chạy lại cửa sổ hẹp 10 giây trong từng vùng để tinh chỉnh điểm bắt đầu sao cho mở đầu đúng khoảnh khắc căng nhất. Cho tôi xem bảng timestamp + RMS trước khi cắt.
+> 3. **Xác minh bằng mắt**: tạo contact sheet cho TẤT CẢ ứng viên. Loại bỏ đoạn chỉ ồn nhưng không có nội dung (nhạc, tiếng động vô tri). Chỉ giữ cảnh thật sự cao trào có con người/cử chỉ/khẩu chiến. Gửi sheet cho tôi duyệt trước khi cắt.
+> 4. **Khung hình**: với từng clip được duyệt, xem frame để đặt x_offset RIÊNG — subject phải nằm giữa khung dọc, không bị cắt đầu/chân. Độ phân giải 1080×1920, clip dài 20–45 giây, mở đầu bằng câu thoại/cử chỉ hút mắt.
+> 5. **Chất lượng render**: audio copy nguyên gốc tuyệt đối, không re-encode; caption/sub nguồn giữ nguyên via caption bar; render CRF thấp hơn mặc định (18) để nét tối đa.
+> 6. **Verify bắt buộc**: chạy verify metadata (đúng 1080×1920, đúng duration, audio codec) + xuất 3 frame mẫu mỗi clip cho tôi duyệt bằng mắt. Nếu tôi chưa OK — chỉnh timestamp/x_offset và render lại, tối đa 2 vòng.
+> 7. **Báo cáo cuối**: bảng clip — timestamp nguồn, nội dung 1 dòng, dung lượng, kèm thư mục frame verify.
+
+Điểm khác biệt so với prompt thường: bắt buộc duyệt 3 lần (timestamp → contact sheet → frame thành phẩm), render CRF 18 thay vì 23, loudness 2 lớp tinh chỉnh điểm bắt đầu, x_offset riêng từng clip.
+
 ## Common Mistakes
 
 Xem bảng đầy đủ trong [SKILL.md](SKILL.md) — gồm: subtitle burn-in bị cắt khi crop 9:16, mảnh hình lặp ở caption bar, toạ độ crop lẻ lệch màu yuv420p, Opus-in-mp4, hàm bash tên `cut` shadow `/usr/bin/cut`, `-nostdin` cho ffmpeg trong loop `read`.

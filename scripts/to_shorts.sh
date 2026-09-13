@@ -27,6 +27,7 @@ video=$1 list=$2 outdir=$3
 RES=${4:-1080x1920}
 min_dur=${5:-3}
 max_dur=${6:-60}
+crf=${CRF:-23}   # CRF=18 cho bản chất lượng cao nhất (god prompt)
 [[ -f "$video" ]] || { echo "Không thấy file: $video" >&2; exit 1; }
 [[ -f "$list" ]] || { echo "Không thấy file: $list" >&2; exit 1; }
 
@@ -74,7 +75,7 @@ mkshort() {
 [bg][main]overlay=0:0[comp];\
 [comp][strip]overlay=0:${strip_y}[v]" \
     -map "[v]" -map 0:a \
-    -c:v libx264 -preset veryfast -crf 23 "${acopy[@]}" \
+    -c:v libx264 -preset veryfast -crf "$crf" "${acopy[@]}" \
     -movflags +faststart -y "$outdir/$name"
 }
 

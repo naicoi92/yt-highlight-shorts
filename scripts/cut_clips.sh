@@ -17,6 +17,7 @@ usage() {
 video=$1 list=$2 outdir=$3
 min_dur=${4:-3}
 max_dur=${5:-60}
+crf=${CRF:-23}   # CRF=18 cho bản chất lượng cao nhất (god prompt)
 [[ -f "$video" ]] || { echo "Không thấy file: $video" >&2; exit 1; }
 [[ -f "$list" ]] || { echo "Không thấy file: $list" >&2; exit 1; }
 mkdir -p "$outdir"
@@ -35,7 +36,7 @@ cutclip() { # KHÔNG đặt tên hàm "cut" — sẽ shadow /usr/bin/cut
   [[ $name == *.mp4 ]] || name="${name}.mp4"
   # -nostdin: ffmpeg không được ăn stdin của vòng lặp read
   ffmpeg -nostdin -v error -ss "$ss" -i "$video" -t "$t" \
-    -c:v libx264 -preset veryfast -crf 23 "${acopy[@]}" \
+    -c:v libx264 -preset veryfast -crf "$crf" "${acopy[@]}" \
     -movflags +faststart -y "$outdir/$name"
 }
 
